@@ -1,0 +1,26 @@
+{
+  "entry": "src/index.js",
+  "disableCSSModules": false,
+  "publicPath": "/admin/",
+  "autoprefixer": null,
+  "extraBabelPlugins": [
+    "transform-runtime",
+    ["import", { "libraryName": "antd", "style": true }]
+  ],
+  "proxy": {
+    "/tp": {
+      "target": "http://localhost/alumni/",
+      "changeOrigin": true,
+      "pathRewrite": { "^/tp" : "" }
+    }
+  },
+  "env": {
+    "development": {
+      "extraBabelPlugins": [
+        "dva-hmr"
+      ]
+    },
+    "production": {
+    }
+  }
+}
