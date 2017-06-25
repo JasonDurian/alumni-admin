@@ -1,4 +1,4 @@
-# Alumni(校园会Demo前端部分)
+# Alumni(校园会Demo后台部分)
 
 [![React Native](https://img.shields.io/badge/react-^15.4.1-brightgreen.svg?style=flat-square)](https://github.com/facebook/react)
 [![Ant Design](https://img.shields.io/badge/ant--design-^2.7.3-yellowgreen.svg?style=flat-square)](https://github.com/ant-design/ant-design)
@@ -23,9 +23,9 @@
 
 ### 1.1
 
-`2017-06-14`
+`2017-06-19`
 
--   用户界面基础代码完成
+-   后台登陆、菜单等基础代码完成
 
 ## 开发构建
 
@@ -66,7 +66,7 @@
 
 克隆项目文件:
 
-    git clone https://github.com/JasonDurian/alumni-frontend.git
+    git clone https://github.com/JasonDurian/alumni-admin.git
 
 进入目录安装依赖:
 
@@ -96,13 +96,3 @@ npm run lint
 ## 参考
 
 用户列表：<https://github.com/dvajs/dva/tree/master/examples/user-dashboard>
-
-## Admin截屏
-
-web
-
-![](assets/demo4.gif)
-
-移动
-
-![](assets/demo3.gif)
