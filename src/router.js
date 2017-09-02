@@ -53,6 +53,54 @@ const Routers = function ({ history, app }) {
             }, 'user-detail')
           },
         }, {
+          path: 'member',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/member/member'))
+              cb(null, require('./routes/member/'))
+            }, 'member')
+          },
+        }, {
+          path: 'member/:id',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/member/detail'))
+              cb(null, require('./routes/member/detail/'))
+            }, 'member-detail')
+          },
+        }, {
+          path: 'square',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/square/square'))
+              cb(null, require('./routes/square/'))
+            }, 'square')
+          },
+        }, {
+          path: 'square/:id',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/square/detail'))
+              cb(null, require('./routes/square/detail/'))
+            }, 'square-detail')
+          },
+        }, {
+          path: 'comment',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/discuss/comment'))
+              cb(null, require('./routes/discuss/comment/'))
+            }, 'comment')
+          },
+        }, {
+          path: 'message',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/discuss/message'))
+              cb(null, require('./routes/discuss/message/'))
+            }, 'message')
+          },
+        }, {
           path: '*',
           getComponent (nextState, cb) {
             require.ensure([], require => {

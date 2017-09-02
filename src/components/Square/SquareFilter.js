@@ -20,7 +20,7 @@ const TwoColProps = {
   xl: 96,
 }
 
-const UserFilter = ({
+const SquareFilter = ({
   onAdd,
   isMotion,
   switchIsMotion,
@@ -43,7 +43,7 @@ const UserFilter = ({
   const handleSubmit = () => {
     let fields = getFieldsValue()
     fields = handleFields(fields)
-    console.log(fields)
+    // console.log(fields)
     onFilterChange(fields)
   }
 
@@ -68,7 +68,7 @@ const UserFilter = ({
     fields = handleFields(fields)
     onFilterChange(fields)
   }
-  const { name, address } = filter
+  const { keywords, address } = filter
 
   let initialCreateTime = []
   if (filter.createTime && filter.createTime[0]) {
@@ -81,7 +81,7 @@ const UserFilter = ({
   return (
     <Row gutter={24}>
       <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
-        {getFieldDecorator('name', { initialValue: name })(<Search placeholder="Search Name" size="large" onSearch={handleSubmit} />)}
+        {getFieldDecorator('keywords', { initialValue: keywords })(<Search placeholder="Search Title|Content" size="large" onSearch={handleSubmit} />)}
       </Col>
       <Col {...ColProps} xl={{ span: 6 }} md={{ span: 8 }} sm={{ span: 12 }}>
         <FilterItem label="Createtime">
@@ -106,7 +106,7 @@ const UserFilter = ({
   )
 }
 
-UserFilter.propTypes = {
+SquareFilter.propTypes = {
   onAdd: PropTypes.func,
   isMotion: PropTypes.bool,
   switchIsMotion: PropTypes.func,
@@ -115,4 +115,4 @@ UserFilter.propTypes = {
   onFilterChange: PropTypes.func,
 }
 
-export default Form.create()(UserFilter)
+export default Form.create()(SquareFilter)

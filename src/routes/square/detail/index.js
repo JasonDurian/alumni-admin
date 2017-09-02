@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'dva'
 import styles from './index.less'
 
-const Detail = ({ userDetail }) => {
-  const { data } = userDetail
+const Detail = ({ squareDetail }) => {
+  const { data } = squareDetail
   const content = []
   let i = 0
 
@@ -12,7 +12,7 @@ const Detail = ({ userDetail }) => {
     for (let key in item) {
       if (Object.prototype.toString.call(item[key]) === '[object Object]' || Array.isArray(item[key])) {
         content.push(
-          <h4 key={key}>{key}</h4>
+            <h4 key={key}>{key}</h4>
         )
         getChildArray(item[key])
       } else {
@@ -30,6 +30,7 @@ const Detail = ({ userDetail }) => {
   }
 
   getChildArray(data)
+
   return (<div className="content-inner">
     <div className={styles.content}>
       {content}
@@ -42,4 +43,4 @@ Detail.propTypes = {
   loading: PropTypes.bool,
 }
 
-export default connect(({ userDetail, loading }) => ({ userDetail, loading: loading.models.userDetail }))(Detail)
+export default connect(({ squareDetail, loading }) => ({ squareDetail, loading: loading.models.squareDetail }))(Detail)

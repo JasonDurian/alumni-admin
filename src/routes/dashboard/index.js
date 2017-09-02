@@ -12,12 +12,22 @@ const bodyStyle = {
   },
 }
 
+const content = []
+for (let key in color) {
+  content.push(
+    <Row gutter={24} key={key}>
+      <Col span={24} style={{ height: '50px', background: color[key] }} />
+    </Row>
+  )
+}
+
 function Dashboard ({ dashboard }) {
   const {  } = dashboard
 
   return (
-    <Row gutter={24}>
-    </Row>
+    <div>
+      { content }
+    </div>
   )
 }
 

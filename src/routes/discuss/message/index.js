@@ -3,35 +3,36 @@ import PropTypes from 'prop-types'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
 import { Row, Col, Button, Popconfirm } from 'antd'
-import { UserComponent } from '../../components'
+import { DiscussComponent } from '../../../components'
 
-const { UserList, UserFilter, UserModal } = UserComponent
+const { DiscussList, DiscussFilter, DiscussModal } = DiscussComponent
 
-const User = ({ location, dispatch, user, loading }) => {
-  const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = user
+const Message = ({ location, dispatch, message, loading }) => {
+  const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = message
   const { pageSize } = pagination
 
-  const userModalProps = {
+  const messageModalProps = {
+    location,
     item: modalType === 'create' ? {} : currentItem,
     visible: modalVisible,
     maskClosable: false,
     confirmLoading: loading,
-    title: `${modalType === 'create' ? 'Create User' : 'Update User'}`,
+    title: `${modalType === 'create' ? 'Create Discuss' : 'Update Discuss'}`,
     wrapClassName: 'vertical-center-modal',
     onOk (data) {
       dispatch({
-        type: `user/${modalType}`,
+        type: `message/${modalType}`,
         payload: data,
       })
     },
     onCancel () {
       dispatch({
-        type: 'user/hideModal',
+        type: 'message/hideModal',
       })
     },
   }
 
-  const userListProps = {
+  const messageListProps = {
     dataSource: list,
     loading,
     pagination,
@@ -50,13 +51,13 @@ const User = ({ location, dispatch, user, loading }) => {
     },
     onDeleteItem (id) {
       dispatch({
-        type: 'user/delete',
+        type: 'message/delete',
         payload: id,
       })
     },
     onEditItem (item) {
       dispatch({
-        type: 'user/showModal',
+        type: 'message/showModal',
         payload: {
           modalType: 'update',
           currentItem: item,
@@ -67,7 +68,7 @@ const User = ({ location, dispatch, user, loading }) => {
       selectedRowKeys,
       onChange: (keys) => {
         dispatch({
-          type: 'user/updateState',
+          type: 'message/updateState',
           payload: {
             selectedRowKeys: keys,
           },
@@ -76,7 +77,7 @@ const User = ({ location, dispatch, user, loading }) => {
     },
   }
 
-  const userFilterProps = {
+  const messageFilterProps = {
     isMotion,
     filter: {
       ...location.query,
@@ -93,31 +94,31 @@ const User = ({ location, dispatch, user, loading }) => {
     },
     onSearch (fieldsValue) {
       fieldsValue.keyword.length ? dispatch(routerRedux.push({
-        pathname: '/user',
+        pathname: '/message',
         query: {
           field: fieldsValue.field,
           keyword: fieldsValue.keyword,
         },
       })) : dispatch(routerRedux.push({
-        pathname: '/user',
+        pathname: '/message',
       }))
     },
     onAdd () {
       dispatch({
-        type: 'user/showModal',
+        type: 'message/showModal',
         payload: {
           modalType: 'create',
         },
       })
     },
     switchIsMotion () {
-      dispatch({ type: 'user/switchIsMotion' })
+      dispatch({ type: 'message/switchIsMotion' })
     },
   }
 
   const handleDeleteItems = () => {
     dispatch({
-      type: 'user/multiDelete',
+      type: 'message/multiDelete',
       payload: {
         ids: selectedRowKeys,
       },
@@ -126,8 +127,8 @@ const User = ({ location, dispatch, user, loading }) => {
 
   let current
   const handleStatus = () => {
-      for (let index in list) {
-        if (list[index].id == selectedRowKeys[0]) {
+    for (let index in list) {
+      if (list[index].id == selectedRowKeys[0]) {
         current = !list[index].status ? 1 : 0
         break
       }
@@ -138,7 +139,7 @@ const User = ({ location, dispatch, user, loading }) => {
     handleStatus()
 
     dispatch({
-      type: 'user/multiEnable',
+      type: 'message/multiEnable',
       payload: {
         ids: selectedRowKeys,
         status: current
@@ -148,7 +149,7 @@ const User = ({ location, dispatch, user, loading }) => {
 
   return (
     <div className="content-inner">
-      <UserFilter {...userFilterProps} />
+      <DiscussFilter {...messageFilterProps} />
       {
         selectedRowKeys.length > 0 &&
         <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>
@@ -161,17 +162,17 @@ const User = ({ location, dispatch, user, loading }) => {
           </Col>
         </Row>
       }
-      <UserList {...userListProps} />
-      {modalVisible && <UserModal {...userModalProps} />}
+      <DiscussList {...messageListProps} />
+      {modalVisible && <DiscussModal {...messageModalProps} />}
     </div>
   )
 }
 
-User.propTypes = {
-  user: PropTypes.object,
+Message.propTypes = {
+  message: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.bool,
 }
 
-export default connect(({ user, loading }) => ({ user, loading: loading.models.user }))(User)
+export default connect(({ message, loading }) => ({ message, loading: loading.models.message }))(Message)

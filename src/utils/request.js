@@ -42,7 +42,7 @@ const optionsHandler = (options, values = {
         authKey: localStorage.getItem(`${prefix}authKey`)
       }
     }
-  }else {
+  } else {
     auth = {
       headers: values
     }

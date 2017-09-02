@@ -1,11 +1,11 @@
 import pathToRegexp from 'path-to-regexp'
 import Services from '../../services/common'
 
-const service = new Services('users')
+const service = new Services('square')
 
 export default {
 
-  namespace: 'userDetail',
+  namespace: 'squareDetail',
 
   state: {
     data: {},
@@ -14,7 +14,7 @@ export default {
   subscriptions: {
     setup ({ dispatch, history }) {
       history.listen(() => {
-        const match = pathToRegexp('/user/:id').exec(location.pathname)
+        const match = pathToRegexp('/square/:id').exec(location.pathname)
         if (match) {
           dispatch({ type: 'query', payload: { id: match[1] } })
         }
@@ -24,8 +24,8 @@ export default {
 
   effects: {
     *query ({
-      payload,
-    }, { call, put }) {
+              payload,
+            }, { call, put }) {
       const data = yield call(service.queryOne.bind(service), payload)
       yield put({
         type: 'querySuccess',

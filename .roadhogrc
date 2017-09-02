@@ -9,7 +9,7 @@
   ],
   "proxy": {
     "/tp": {
-      "target": "http://localhost/alumni/",
+      "target": "http://www.alumni.app/",
       "changeOrigin": true,
       "pathRewrite": { "^/tp" : "" }
     }

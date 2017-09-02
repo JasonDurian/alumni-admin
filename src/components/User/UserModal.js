@@ -14,16 +14,14 @@ const formItemLayout = {
 }
 
 const modal = ({
-  visible,
-  type,
   item = {},
   onOk,
-  onCancel,
   form: {
     getFieldDecorator,
     validateFields,
     getFieldsValue,
   },
+  ...modalProps
 }) => {
   function handleOk () {
     validateFields((errors) => {
@@ -32,27 +30,35 @@ const modal = ({
       }
       const data = {
         ...getFieldsValue(),
-        key: item.key,
+        // key: item.key,
       }
-      data.address = data.address.join(' ')
+      data.groups = ['15']        //默认为普通会员
       onOk(data)
     })
   }
 
   const modalOpts = {
-    title: `${type === 'create' ? 'Create User' : 'Update User'}`,
-    visible,
+    ...modalProps,
     onOk: handleOk,
-    onCancel,
-    wrapClassName: 'vertical-center-modal',
   }
 
   return (
     <Modal {...modalOpts}>
       <Form layout="horizontal">
-        <FormItem label="Name" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('name', {
-            initialValue: item.name,
+        <FormItem label="UserName" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('username', {
+            initialValue: item.username,
+            rules: [
+              {
+                required: true,
+              }, {
+                pattern: /^[\u4E00-\u9FA5A-Za-z0-9_]{6,12}$/, message: '用户名为中英文、数字下划线，长度在6到12位'
+              }
+            ],
+          })(<Input />)}
+        </FormItem>
+        <FormItem label="Password" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('password', {
             rules: [
               {
                 required: true,
@@ -60,9 +66,9 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="NickName" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('nickName', {
-            initialValue: item.nickName,
+        <FormItem label="RealName" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('realname', {
+            initialValue: item.realname,
             rules: [
               {
                 required: true,
@@ -70,51 +76,29 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="Gender" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('isMale', {
-            initialValue: item.isMale,
+        <FormItem label="Remark" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('remark', {
+            initialValue: item.remark || '',
             rules: [
               {
-                required: true,
-                type: 'boolean',
-              },
-            ],
-          })(
-            <Radio.Group>
-              <Radio value>Male</Radio>
-              <Radio value={false}>Female</Radio>
-            </Radio.Group>
-          )}
-        </FormItem>
-        <FormItem label="Age" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('age', {
-            initialValue: item.age,
-            rules: [
-              {
-                required: true,
-                type: 'number',
-              },
-            ],
-          })(<InputNumber min={18} max={100} />)}
-        </FormItem>
-        <FormItem label="Phone" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('phone', {
-            initialValue: item.phone,
-            rules: [
-              {
-                required: true,
-                pattern: /^1[34578]\d{9}$/,
               },
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="Email" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('email', {
-            initialValue: item.email,
+        <FormItem label="Post" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('post_id', {
+            initialValue: item.p_name,
             rules: [
               {
-                required: true,
-                pattern: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/,
+              },
+            ],
+          })(<Input />)}
+        </FormItem>
+        <FormItem label="Structure" hasFeedback {...formItemLayout}>
+          {getFieldDecorator('structure_id', {
+            initialValue: item.s_name,
+            rules: [
+              {
               },
             ],
           })(<Input />)}

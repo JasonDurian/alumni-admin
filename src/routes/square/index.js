@@ -3,35 +3,35 @@ import PropTypes from 'prop-types'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
 import { Row, Col, Button, Popconfirm } from 'antd'
-import { UserComponent } from '../../components'
+import { SquareComponent } from '../../components'
 
-const { UserList, UserFilter, UserModal } = UserComponent
+const { SquareList, SquareFilter, SquareModal } = SquareComponent
 
-const User = ({ location, dispatch, user, loading }) => {
-  const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = user
+const Square = ({ location, dispatch, square, loading }) => {
+  const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = square
   const { pageSize } = pagination
 
-  const userModalProps = {
+  const squareModalProps = {
     item: modalType === 'create' ? {} : currentItem,
     visible: modalVisible,
     maskClosable: false,
     confirmLoading: loading,
-    title: `${modalType === 'create' ? 'Create User' : 'Update User'}`,
+    title: `${modalType === 'create' ? 'Create Square' : 'Update Square'}`,
     wrapClassName: 'vertical-center-modal',
     onOk (data) {
       dispatch({
-        type: `user/${modalType}`,
+        type: `square/${modalType}`,
         payload: data,
       })
     },
     onCancel () {
       dispatch({
-        type: 'user/hideModal',
+        type: 'square/hideModal',
       })
     },
   }
 
-  const userListProps = {
+  const squareListProps = {
     dataSource: list,
     loading,
     pagination,
@@ -50,13 +50,13 @@ const User = ({ location, dispatch, user, loading }) => {
     },
     onDeleteItem (id) {
       dispatch({
-        type: 'user/delete',
+        type: 'square/delete',
         payload: id,
       })
     },
     onEditItem (item) {
       dispatch({
-        type: 'user/showModal',
+        type: 'square/showModal',
         payload: {
           modalType: 'update',
           currentItem: item,
@@ -67,7 +67,7 @@ const User = ({ location, dispatch, user, loading }) => {
       selectedRowKeys,
       onChange: (keys) => {
         dispatch({
-          type: 'user/updateState',
+          type: 'square/updateState',
           payload: {
             selectedRowKeys: keys,
           },
@@ -76,7 +76,7 @@ const User = ({ location, dispatch, user, loading }) => {
     },
   }
 
-  const userFilterProps = {
+  const squareFilterProps = {
     isMotion,
     filter: {
       ...location.query,
@@ -93,31 +93,31 @@ const User = ({ location, dispatch, user, loading }) => {
     },
     onSearch (fieldsValue) {
       fieldsValue.keyword.length ? dispatch(routerRedux.push({
-        pathname: '/user',
+        pathname: '/square',
         query: {
           field: fieldsValue.field,
           keyword: fieldsValue.keyword,
         },
       })) : dispatch(routerRedux.push({
-        pathname: '/user',
+        pathname: '/square',
       }))
     },
     onAdd () {
       dispatch({
-        type: 'user/showModal',
+        type: 'square/showModal',
         payload: {
           modalType: 'create',
         },
       })
     },
     switchIsMotion () {
-      dispatch({ type: 'user/switchIsMotion' })
+      dispatch({ type: 'square/switchIsMotion' })
     },
   }
 
   const handleDeleteItems = () => {
     dispatch({
-      type: 'user/multiDelete',
+      type: 'square/multiDelete',
       payload: {
         ids: selectedRowKeys,
       },
@@ -126,8 +126,8 @@ const User = ({ location, dispatch, user, loading }) => {
 
   let current
   const handleStatus = () => {
-      for (let index in list) {
-        if (list[index].id == selectedRowKeys[0]) {
+    for (let index in list) {
+      if (list[index].id == selectedRowKeys[0]) {
         current = !list[index].status ? 1 : 0
         break
       }
@@ -138,7 +138,7 @@ const User = ({ location, dispatch, user, loading }) => {
     handleStatus()
 
     dispatch({
-      type: 'user/multiEnable',
+      type: 'square/multiEnable',
       payload: {
         ids: selectedRowKeys,
         status: current
@@ -148,7 +148,7 @@ const User = ({ location, dispatch, user, loading }) => {
 
   return (
     <div className="content-inner">
-      <UserFilter {...userFilterProps} />
+      <SquareFilter {...squareFilterProps} />
       {
         selectedRowKeys.length > 0 &&
         <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>
@@ -161,17 +161,17 @@ const User = ({ location, dispatch, user, loading }) => {
           </Col>
         </Row>
       }
-      <UserList {...userListProps} />
-      {modalVisible && <UserModal {...userModalProps} />}
+      <SquareList {...squareListProps} />
+      {modalVisible && <SquareModal {...squareModalProps} />}
     </div>
   )
 }
 
-User.propTypes = {
-  user: PropTypes.object,
+Square.propTypes = {
+  square: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.bool,
 }
 
-export default connect(({ user, loading }) => ({ user, loading: loading.models.user }))(User)
+export default connect(({ square, loading }) => ({ square, loading: loading.models.square }))(Square)

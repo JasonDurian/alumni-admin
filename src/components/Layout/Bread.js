@@ -15,6 +15,14 @@ const Bread = ({ menus }) => {
       current = menus[index]
       break
     }
+    if (menus[index].child) {
+      menus[index].child.forEach((item) => {
+        if (item.url && pathToRegexp(item.url).exec(location.pathname)) {
+          current = item
+          return
+        }
+      })
+    }
   }
 
   const getPathArray = (item) => {
@@ -51,6 +59,18 @@ const Bread = ({ menus }) => {
       </Breadcrumb.Item>
     )
   })
+
+
+  pathToRegexp(location.pathname).exec('/dashboard') || breads.unshift(
+    <Breadcrumb.Item key="0">
+      <Link to='/dashboard'>
+            <span>
+              <Icon type='laptop' style={{ marginRight: 4 }} />
+              首页
+            </span>
+      </Link>
+    </Breadcrumb.Item>
+  )
 
   return (
     <div className={styles.bread}>

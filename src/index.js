@@ -8,7 +8,7 @@ import './index.css'
 const app = dva({
   history: browserHistory,
   onError(e) {
-    if ((e.number >= 101) && (e.number <= 103)){
+    if ((e.number == 101) || (e.number == 103)){
       if (location.pathname !== '/login') {
         let from = location.pathname
         if (location.pathname === '/dashboard') {
