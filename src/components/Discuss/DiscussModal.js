@@ -34,7 +34,7 @@ const modal = ({
         ...getFieldsValue(),
       }
       /* 为了使用radio等组件，将数据库中的字段变成了string类型，现在转变回来 */
-      data.type = parseInt(data.type, 10)
+      // data.type = parseInt(data.type, 10)
       data.status = parseInt(data.status, 10)
       onOk(data)
     })

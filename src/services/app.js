@@ -22,6 +22,7 @@ export function logout(values) {
 
 export function query() {
   return request(`${USER_URL}/query`, {
-    needAuth: true
+    method: 'POST',
+    needAuth: true,
   });
 }

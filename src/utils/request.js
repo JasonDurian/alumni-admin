@@ -72,7 +72,7 @@ export default async function request(url, options = {}) {
 
   parseErrorMessage(data)
 
-  console.log(data)
+  // console.log(data)
 
   return data;
 }

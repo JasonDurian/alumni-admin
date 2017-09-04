@@ -6,10 +6,10 @@ import Menus from './Menu'
 
 const SubMenu = Menu.SubMenu
 
-function Header ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, navOpenKeys, changeOpenKeys, menu }) {
+function Header ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVisible, location, switchMenuPopover, navOpenKeys, changeOpenKeys, menus }) {
   let handleClickMenu = e => e.key === 'logout' && logout()
   const menusProps = {
-    menu,
+    menus,
     siderFold: false,
     darkTheme: false,
     isNavbar,
@@ -50,7 +50,7 @@ function Header ({ user, logout, switchSider, siderFold, isNavbar, menuPopoverVi
 }
 
 Header.propTypes = {
-  menu: PropTypes.array,
+  menus: PropTypes.array,
   user: PropTypes.object,
   logout: PropTypes.func,
   switchSider: PropTypes.func,
