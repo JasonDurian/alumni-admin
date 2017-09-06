@@ -11,9 +11,15 @@ export default modelExtend(commonModel('member', service), {
   effects: {
     * update({payload}, {select, call, put}) {
       const id = yield select(_ => _.member.currentItem.member_id)
-      const data = yield call(service.update, id, payload)
+      const data = yield call(service.update.bind(service), id, payload)
       yield put({type: 'hideModal'})
       yield put({type: 'query'})
+    },
+
+    * multiCheck({ payload }, { call, put }) {
+      const data = yield call(service.multiCheck.bind(service), payload)
+      yield put({ type: 'updateState', payload: { selectedRowKeys: [] } })
+      yield put({ type: 'query' })
     },
   }
 

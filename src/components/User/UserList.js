@@ -23,6 +23,18 @@ const list =  ({ loading, dataSource, pagination, onPageChange, onDeleteItem, on
     }
   }
 
+  const handleCheckStatus = (checkStatus) => {
+    let certifiedLabel = ''
+    switch (checkStatus) {
+      case 0: certifiedLabel = '未认证'; break;
+      case 1: certifiedLabel = '已认证'; break;
+      case 2: certifiedLabel = '认证中'; break;
+      case 3: certifiedLabel = '认证失败'; break;
+      default: break;
+    }
+    return certifiedLabel
+  }
+
   const columns = location.pathname === '/member'
     ? [{
         title: 'ID',
@@ -40,6 +52,11 @@ const list =  ({ loading, dataSource, pagination, onPageChange, onDeleteItem, on
         dataIndex: 'username',
         key: 'username',
         render: (text, record) => <Link to={`member/${record.member_id}`}>{text}</Link>,
+      }, {
+        title: 'CheckStatus',
+        dataIndex: 'check_status',
+        key: 'check_status',
+        render: (text) => handleCheckStatus(text),
       }, {
         title: 'Status',
         dataIndex: 'status',

@@ -8,9 +8,9 @@ module.exports = {
   YQL: ['http://www.zuimeitianqi.com'],
   CORS: ['http://localhost:7001', 'http://192.168.1.110:8000'],
   openPages: ['/login'],
-  apiPrefix: 'http://api.jasonfj.com/admin',
+  // apiPrefix: 'http://api.jasonfj.com/admin',
   // apiPrefix: 'http://api.alumni.app/admin',
-  // apiPrefix: '/tp/admin',
+  apiPrefix: '/tp/admin',
   api: {
     userLogin: '/user/login',
     userLogout: '/user/logout',

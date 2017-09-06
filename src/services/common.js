@@ -7,8 +7,8 @@ export default class Services {
     this.baseUrl = `${apiPrefix}/${url}`
   }
 
-  query({ page = 1, pageSize = 10, keywords = '', createTime = '' }) {
-    return request(`${this.baseUrl}?page=${page}&limit=${pageSize}&keywords=${keywords}&time=${createTime.toString()}`, {
+  query({ page = 1, pageSize = 10, keywords = '', createTime = '', status = '' }) {
+    return request(`${this.baseUrl}?page=${page}&limit=${pageSize}&keywords=${keywords}&time=${createTime.toString()}&status=${status}`, {
       needAuth: true
     });
   }
@@ -52,6 +52,14 @@ export default class Services {
 
   multiEnable(values) {
     return request(`${this.baseUrl}/enables`, {
+      method: 'POST',
+      needAuth: true,
+      body: JSON.stringify(values),
+    });
+  }
+
+  multiCheck(values) {
+    return request(`${this.baseUrl}/checks`, {
       method: 'POST',
       needAuth: true,
       body: JSON.stringify(values),

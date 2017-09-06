@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { FilterItem } from '../../components'
-import { Form, Button, Row, Col, DatePicker, Input, Switch } from 'antd'
+import { Form, Button, Row, Col, DatePicker, Input, Switch, Select } from 'antd'
 
 const Search = Input.Search
+const Option = Select.Option
 const { RangePicker } = DatePicker
 
 const ColProps = {
@@ -68,9 +69,16 @@ const UserFilter = ({
     fields = handleFields(fields)
     onFilterChange(fields)
   }
-  const { keywords, address } = filter
+  const { keywords, status } = filter
+  const selectInitialProps = !!status ? { initialValue: status.toString() } : {}
+  const selectProps = {
+    size: 'large',
+    allowClear: true,
+    placeholder: 'Please pick a check_status',
+    style: { width: '100%' },
+  }
 
-  let initialCreateTime = []
+  const initialCreateTime = []
   if (filter.createTime && filter.createTime[0]) {
     initialCreateTime[0] = moment(filter.createTime[0])
   }
@@ -82,6 +90,19 @@ const UserFilter = ({
     <Row gutter={24}>
       <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
         {getFieldDecorator('keywords', { initialValue: keywords })(<Search placeholder="Search Name" size="large" onSearch={handleSubmit} />)}
+      </Col>
+      <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
+        {getFieldDecorator('status', { ...selectInitialProps })(
+          <Select
+            {...selectProps}
+            onChange={handleChange.bind(null, 'status')}
+          >
+            <Option value="0">未认证</Option>
+            <Option value="1">已认证</Option>
+            <Option value="2">认证中</Option>
+            <Option value="3">认证失败</Option>
+          </Select>
+        )}
       </Col>
       <Col {...ColProps} xl={{ span: 6 }} md={{ span: 8 }} sm={{ span: 12 }}>
         <FilterItem label="Createtime">

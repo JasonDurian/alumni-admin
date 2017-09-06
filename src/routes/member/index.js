@@ -18,6 +18,7 @@ const Member = ({ location, dispatch, member, loading }) => {
     confirmLoading: loading,
     title: `${modalType === 'create' ? 'Create User' : 'Update User'}`,
     wrapClassName: 'vertical-center-modal',
+    pathName: location.pathname,
     onOk (data) {
       dispatch({
         type: `member/${modalType}`,
@@ -146,6 +147,16 @@ const Member = ({ location, dispatch, member, loading }) => {
     })
   }
 
+  const handleCheckItems = (checkStatus) => {
+    dispatch({
+      type: 'member/multiCheck',
+      payload: {
+        ids: selectedRowKeys,
+        check_status: parseInt(checkStatus, 10)
+      },
+    })
+  }
+
   return (
     <div className="content-inner">
       <UserFilter {...memberFilterProps} />
@@ -157,6 +168,8 @@ const Member = ({ location, dispatch, member, loading }) => {
             <Popconfirm title={'Are you sure delete these items?'} placement="left" onConfirm={handleDeleteItems}>
               <Button type="primary" size="large" style={{ marginLeft: 8 }}>Remove</Button>
             </Popconfirm>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(1)}>审核通过</Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(3)}>审核失败</Button>
             <Button size="large" style={{ marginLeft: 8 }} onClick={handleEnableItems}>启用/禁用</Button>
           </Col>
         </Row>
