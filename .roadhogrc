@@ -1,7 +1,8 @@
 {
-  "entry": "src/index.js",
+  "entry": "src/entry/*.js",
   "disableCSSModules": false,
   "publicPath": "/",
+  "outputPath": "./alumni_admin",
   "autoprefixer": null,
   "extraBabelPlugins": [
     "transform-runtime",
@@ -17,7 +18,8 @@
   "env": {
     "development": {
       "extraBabelPlugins": [
-        "dva-hmr"
+        "dva-hmr",
+        ["react-intl", { "messagesDir": "./i18n-messages" }]
       ]
     },
     "production": {

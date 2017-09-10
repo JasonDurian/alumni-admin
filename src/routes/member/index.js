@@ -2,12 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { Row, Col, Button, Popconfirm } from 'antd'
 import { UserComponent } from '../../components'
+import messages from '../../lang/User/'
 
 const { UserList, UserFilter, UserModal } = UserComponent
 
-const Member = ({ location, dispatch, member, loading }) => {
+const Member = ({ location, dispatch, member, loading, intl: { formatMessage } }) => {
   const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = member
   const { pageSize } = pagination
 
@@ -164,13 +166,24 @@ const Member = ({ location, dispatch, member, loading }) => {
         selectedRowKeys.length > 0 &&
         <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>
           <Col>
-            {`Selected ${selectedRowKeys.length} items `}
-            <Popconfirm title={'Are you sure delete these items?'} placement="left" onConfirm={handleDeleteItems}>
-              <Button type="primary" size="large" style={{ marginLeft: 8 }}>Remove</Button>
+            <FormattedMessage
+              {...messages.selectedItems}
+              values={{ selectedRowKeys: selectedRowKeys.length }}
+            />
+            <Popconfirm title={formatMessage(messages.deleteRecord)} placement="left" onConfirm={handleDeleteItems}>
+              <Button type="primary" size="large" style={{ marginLeft: 8 }}>
+                <FormattedMessage {...messages.remove} />
+              </Button>
             </Popconfirm>
-            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(1)}>审核通过</Button>
-            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(3)}>审核失败</Button>
-            <Button size="large" style={{ marginLeft: 8 }} onClick={handleEnableItems}>启用/禁用</Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(1)}>
+              <FormattedMessage {...messages.isCertified} />
+            </Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={() => handleCheckItems(3)}>
+              <FormattedMessage {...messages.certifyFailed} />
+            </Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={handleEnableItems}>
+              <FormattedMessage {...messages.enable} />
+            </Button>
           </Col>
         </Row>
       }
@@ -185,6 +198,7 @@ Member.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.bool,
+  intl: PropTypes.object,
 }
 
-export default connect(({ member, loading }) => ({ member, loading: loading.models.member }))(Member)
+export default connect(({ member, loading }) => ({ member, loading: loading.models.member }))(injectIntl(Member))

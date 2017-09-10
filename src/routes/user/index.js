@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { routerRedux } from 'dva/router'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { connect } from 'dva'
 import { Row, Col, Button, Popconfirm } from 'antd'
 import { UserComponent } from '../../components'
+import messages from '../../lang/User/'
 
 const { UserList, UserFilter, UserModal } = UserComponent
 
-const User = ({ location, dispatch, user, loading }) => {
+const User = ({ location, dispatch, user, loading, intl: { formatMessage } }) => {
   const { list, pagination, currentItem, modalVisible, modalType, isMotion, selectedRowKeys } = user
   const { pageSize } = pagination
 
@@ -153,11 +155,18 @@ const User = ({ location, dispatch, user, loading }) => {
         selectedRowKeys.length > 0 &&
         <Row style={{ marginBottom: 24, textAlign: 'right', fontSize: 13 }}>
           <Col>
-            {`Selected ${selectedRowKeys.length} items `}
-            <Popconfirm title={'Are you sure delete these items?'} placement="left" onConfirm={handleDeleteItems}>
-              <Button type="primary" size="large" style={{ marginLeft: 8 }}>Remove</Button>
+            <FormattedMessage
+              {...messages.selectedItems}
+              values={{ selectedRowKeys: selectedRowKeys.length }}
+            />
+            <Popconfirm title={formatMessage(messages.deleteRecord)} placement="left" onConfirm={handleDeleteItems}>
+              <Button type="primary" size="large" style={{ marginLeft: 8 }}>
+                <FormattedMessage {...messages.remove} />
+              </Button>
             </Popconfirm>
-            <Button size="large" style={{ marginLeft: 8 }} onClick={handleEnableItems}>启用/禁用</Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={handleEnableItems}>
+              <FormattedMessage {...messages.enable} />
+            </Button>
           </Col>
         </Row>
       }
@@ -172,6 +181,7 @@ User.propTypes = {
   location: PropTypes.object,
   dispatch: PropTypes.func,
   loading: PropTypes.bool,
+  intl: PropTypes.object,
 }
 
-export default connect(({ user, loading }) => ({ user, loading: loading.models.user }))(User)
+export default connect(({ user, loading }) => ({ user, loading: loading.models.user }))(injectIntl(User))

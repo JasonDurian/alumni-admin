@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'dva'
+import { Helmet } from 'react-helmet'
 import { Layout } from '../components'
 import { classnames, config } from '../utils'
-import { Helmet } from 'react-helmet'
 import '../themes/index.less'
 const { prefix } = config
 

@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import moment from 'moment'
 import { FilterItem } from '../../components'
+import messages from '../../lang/User/'
 import { Form, Button, Row, Col, DatePicker, Input, Switch, Select } from 'antd'
 
 const Search = Input.Search
@@ -31,6 +33,9 @@ const UserFilter = ({
     getFieldDecorator,
     getFieldsValue,
     setFieldsValue,
+  },
+  intl: {
+    formatMessage,
   },
 }) => {
   const handleFields = (fields) => {
@@ -74,7 +79,7 @@ const UserFilter = ({
   const selectProps = {
     size: 'large',
     allowClear: true,
-    placeholder: 'Please pick a check_status',
+    placeholder: formatMessage(messages.pleaseSelectStatus),
     style: { width: '100%' },
   }
 
@@ -89,7 +94,9 @@ const UserFilter = ({
   return (
     <Row gutter={24}>
       <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
-        {getFieldDecorator('keywords', { initialValue: keywords })(<Search placeholder="Search Name" size="large" onSearch={handleSubmit} />)}
+        {getFieldDecorator('keywords', { initialValue: keywords })(
+          <Search placeholder={formatMessage(messages.pleaseInputName)} size="large" onSearch={handleSubmit} />
+        )}
       </Col>
       <Col {...ColProps} xl={{ span: 4 }} md={{ span: 8 }}>
         {getFieldDecorator('status', { ...selectInitialProps })(
@@ -97,15 +104,15 @@ const UserFilter = ({
             {...selectProps}
             onChange={handleChange.bind(null, 'status')}
           >
-            <Option value="0">未认证</Option>
-            <Option value="1">已认证</Option>
-            <Option value="2">认证中</Option>
-            <Option value="3">认证失败</Option>
+            <Option value="0"><FormattedMessage {...messages.unCertified} /></Option>
+            <Option value="1"><FormattedMessage {...messages.isCertified} /></Option>
+            <Option value="2"><FormattedMessage {...messages.checking} /></Option>
+            <Option value="3"><FormattedMessage {...messages.certifyFailed} /></Option>
           </Select>
         )}
       </Col>
       <Col {...ColProps} xl={{ span: 6 }} md={{ span: 8 }} sm={{ span: 12 }}>
-        <FilterItem label="Createtime">
+        <FilterItem label={formatMessage(messages.create_time)}>
           {getFieldDecorator('createTime', { initialValue: initialCreateTime })(
             <RangePicker style={{ width: '100%' }} size="large" onChange={handleChange.bind(null, 'createTime')} />
           )}
@@ -114,8 +121,12 @@ const UserFilter = ({
       <Col {...TwoColProps} xl={{ span: 10 }} md={{ span: 24 }} sm={{ span: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div >
-            <Button type="primary" size="large" className="margin-right" onClick={handleSubmit}>Search</Button>
-            <Button size="large" onClick={handleReset}>Reset</Button>
+            <Button type="primary" size="large" className="margin-right" onClick={handleSubmit}>
+              <FormattedMessage {...messages.search} />
+            </Button>
+            <Button size="large" onClick={handleReset}>
+              <FormattedMessage {...messages.reset} />
+            </Button>
           </div>
           <div>
             <Switch style={{ marginRight: 16 }} size="large" defaultChecked={isMotion} onChange={switchIsMotion} checkedChildren={'Motion'} unCheckedChildren={'Motion'} />
@@ -134,6 +145,10 @@ UserFilter.propTypes = {
   form: PropTypes.object,
   filter: PropTypes.object,
   onFilterChange: PropTypes.func,
+  intl: PropTypes.object,
 }
 
-export default Form.create()(UserFilter)
+/**
+ * Todo: might not the best method, use rc-form?
+ */
+export default Form.create()(injectIntl(UserFilter))
