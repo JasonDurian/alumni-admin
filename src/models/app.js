@@ -1,7 +1,7 @@
 import { routerRedux } from 'dva/router'
 import { message } from 'antd'
 import { parse } from 'qs'
-import { query, login, logout } from '../services/app'
+import { query, login, logout, getVerify } from '../services/app'
 import { config, queryURL } from '../utils'
 
 const { prefix } = config
@@ -10,6 +10,7 @@ export default {
   namespace: 'app',
   state: {
     user: {},
+    verify: '',
     menus: JSON.parse(localStorage.getItem(`${prefix}menus`)),
     menuPopoverVisible: false,
     siderFold: localStorage.getItem(`${prefix}siderFold`) === 'true',
@@ -25,6 +26,8 @@ export default {
           window.onresize = () => {
             dispatch({ type: 'changeNavbar' })
           }
+        } else {
+          dispatch({ type: 'getVerify' })
         }
       });
     }
@@ -35,7 +38,7 @@ export default {
     }, { put, call }) {
       const data = yield call(login, payload)
       localStorage.setItem(`${prefix}authKey`, data.data.authKey)
-      localStorage.setItem(`${prefix}menus`, JSON.stringify(data.data.menusList[0].child))              // 菜单数据
+      localStorage.setItem(`${prefix}menus`, JSON.stringify(data.data.menusList[0].child)); // 菜单数据
       const from = queryURL('from')
       yield put({
         type: 'loginSuccess',
@@ -64,6 +67,17 @@ export default {
       // if (location.pathname === '/login') {
       //   yield put(routerRedux.push('/dashboard'))
       // }
+    },
+    *getVerify ({
+      payload,
+    }, { call, put }) {
+      const data = yield call(getVerify, parse(payload));
+      yield put({
+        type: 'handleVerify',
+        payload: {
+          verify: data,
+        }
+      })
     },
     *logout ({
       payload,
@@ -117,6 +131,9 @@ export default {
     },
     loginSuccess (state, { payload: { user, menus } }) {
       return { ...state, user, menus }
+    },
+    handleVerify (state, { payload: { verify } }) {
+      return { ...state, verify }
     },
     handleSwitchSider (state) {
       localStorage.setItem(`${prefix}siderFold`, !state.siderFold)

@@ -20,6 +20,14 @@ export function logout(values) {
   });
 }
 
+/**
+ * 获取验证码img url
+ * @returns {*}
+ */
+export function getVerify({ param }) {
+  return `${BASE_URL}/getVerify?v=${param}`;
+}
+
 export function query() {
   return request(`${USER_URL}/query`, {
     method: 'POST',
