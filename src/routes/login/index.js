@@ -67,7 +67,7 @@ const Login = ({
               {getFieldDecorator('verifyCode', {
                 rules: [{ required: true, message: 'Please input the captcha you got!' }],
               })(
-                <Input size="large" placeholder="Captcha" />
+                <Input size="large" onPressEnter={handleOk} placeholder="Captcha" />
               )}
             </Col>
             <Col span={14}>

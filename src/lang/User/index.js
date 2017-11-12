@@ -179,7 +179,11 @@ const messages = defineMessages({
   },
   selectedItems: {
     id: 'UserComponents.selectedItems',
-    defaultMessage: `已选择 {selectedRowKeys} 条记录`,
+    defaultMessage: '已选择 {selectedRowKeys} 条记录',
+  },
+  groups: {
+    id: 'UserComponents.groups',
+    defaultMessage: '用户组',
   },
 });
 

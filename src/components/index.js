@@ -4,6 +4,7 @@ import FilterItem from './FilterItem'
 import * as UserComponent from './User'
 import * as SquareComponent from './Square'
 import * as DiscussComponent from './Discuss'
+import * as GroupComponent from './Group'
 
 import layer from './layer'
 
@@ -14,5 +15,6 @@ export {
   UserComponent,
   SquareComponent,
   DiscussComponent,
+  GroupComponent,
   layer,
  }

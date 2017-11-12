@@ -69,6 +69,22 @@ const Routers = function ({ history, app }) {
             }, 'member-detail')
           },
         }, {
+          path: 'group',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/group/group'))
+              cb(null, require('./routes/group/'))
+            }, 'group')
+          },
+        }, {
+          path: 'group/:id',
+          getComponent (nextState, cb) {
+            require.ensure([], require => {
+              registerModel(app, require('./models/group/detail'))
+              cb(null, require('./routes/group/detail/'))
+            }, 'group-detail')
+          },
+        }, {
           path: 'square',
           getComponent (nextState, cb) {
             require.ensure([], require => {

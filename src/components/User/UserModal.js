@@ -1,10 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Radio, Modal } from 'antd'
+import { FormattedMessage, injectIntl } from 'react-intl'
+import { Form, Input, Radio, Modal, TreeSelect } from 'antd'
+import messages from '../../lang/User/'
+import { config } from '../../utils'
+
+const { prefix } = config
 
 const FormItem = Form.Item
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
+// const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
 const formItemLayout = {
   labelCol: {
@@ -24,6 +30,9 @@ const modal = ({
     validateFields,
     getFieldsValue,
   },
+  intl: {
+    formatMessage,
+  },
   ...modalProps
 }) => {
   function handleOk() {
@@ -35,10 +44,22 @@ const modal = ({
         ...getFieldsValue(),
         // key: item.key,
       }
-      data.groups = ['15'];        // 默认为普通会员
+      // data.groups = ['15'];        // 默认为普通会员
       onOk(data);
     });
   }
+
+  const treeProps = {
+    treeData: JSON.parse(localStorage.getItem(`${prefix}groups`)) || [],
+    treeCheckable: true,
+    allowClear: true,
+    multiple: true,
+    treeDefaultExpandAll: true,
+    searchPlaceholder: 'Please select',
+  };
+  // const userGroup = []
+  // if ({}.hasOwnProperty.call(item, 'groups'))
+  // userGroup.push(item.groups.map(val => val.group_id))
 
   const content = []
   content.push(
@@ -62,10 +83,10 @@ const modal = ({
             rules: [{ required: true }],
           })(
             <RadioGroup>
-              <RadioButton value="0">未认证</RadioButton>
-              <RadioButton value="1">已认证</RadioButton>
-              <RadioButton value="2">认证中</RadioButton>
-              <RadioButton value="3">认证失败</RadioButton>
+              <RadioButton value="0"><FormattedMessage {...messages.unCertified} /></RadioButton>
+              <RadioButton value="1"><FormattedMessage {...messages.isCertified} /></RadioButton>
+              <RadioButton value="2"><FormattedMessage {...messages.checking} /></RadioButton>
+              <RadioButton value="3"><FormattedMessage {...messages.certifyFailed} /></RadioButton>
             </RadioGroup>
           )}
         </FormItem>
@@ -75,15 +96,15 @@ const modal = ({
             rules: [{ required: true }],
           })(
             <RadioGroup>
-              <RadioButton value="1">启用</RadioButton>
-              <RadioButton value="0">禁用</RadioButton>
+              <RadioButton value="1"><FormattedMessage {...messages.isEnabled} /></RadioButton>
+              <RadioButton value="0"><FormattedMessage {...messages.disabled} /></RadioButton>
             </RadioGroup>
           )}
         </FormItem>
       </Form>
     ) : (
       <Form layout="horizontal" key={1}>
-        <FormItem label="UserName" hasFeedback {...formItemLayout}>
+        <FormItem label={formatMessage(messages.username)} hasFeedback {...formItemLayout}>
           {getFieldDecorator('username', {
             initialValue: item.username,
             rules: [
@@ -104,7 +125,7 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
-        <FormItem label="RealName" hasFeedback {...formItemLayout}>
+        <FormItem label={formatMessage(messages.name)} hasFeedback {...formItemLayout}>
           {getFieldDecorator('realname', {
             initialValue: item.realname,
             rules: [
@@ -141,6 +162,12 @@ const modal = ({
             ],
           })(<Input />)}
         </FormItem>
+        <FormItem label={formatMessage(messages.groups)} hasFeedback {...formItemLayout}>
+          {getFieldDecorator('groups', {
+            initialValue: [...item.groups.map(val => val.group_id.toString())],
+            rules: [{ required: true }],
+          })(<TreeSelect {...treeProps} />)}
+        </FormItem>
       </Form>
     )
   )
@@ -164,6 +191,7 @@ modal.propTypes = {
   item: PropTypes.object,
   onCancel: PropTypes.func,
   onOk: PropTypes.func,
+  intl: PropTypes.object,
 }
 
-export default Form.create()(modal)
+export default Form.create()(injectIntl(modal))
