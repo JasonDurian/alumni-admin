@@ -16,7 +16,8 @@ const Detail = ({ dispatch, groupDetail, loading }) => {
     confirmLoading: loading,
     onOk (value) {
       dispatch({
-        type: 'groupDetail/update',
+        // 以是否存在id来判断更新/创建操作
+        type: data.hasOwnProperty('id') ? 'groupDetail/update' : 'groupDetail/create',
         payload: value,
       })
     },

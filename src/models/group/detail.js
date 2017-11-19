@@ -17,7 +17,8 @@ export default {
       history.listen(() => {
         const match = pathToRegexp('/group/:id').exec(location.pathname)
         if (match) {
-          if (match[1] > 0) dispatch({ type: 'query', payload: { id: match[1] } });
+          // if (match[1] > 0) dispatch({ type: 'query', payload: { id: match[1] } });
+          dispatch({ type: 'query', payload: { id: parseInt(match[1], 10) } });
         }
       })
     },
@@ -38,7 +39,7 @@ export default {
 
     *create ({ payload }, { call, put }) {
       const data = yield call(service.create.bind(service), payload)
-      yield put({ type: 'query' })
+      message.success(data.data)
     },
 
     *update ({ payload }, { select, call, put }) {
